@@ -1,0 +1,37 @@
+//package herding;
+
+import java.util.*;
+import java.io.*;
+
+public class herding {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("herding.in"));
+		int[] cows = new int[3];
+		
+		cows[0] = Integer.parseInt(in.next());
+		cows[1] = Integer.parseInt(in.next());
+		cows[2] = Integer.parseInt(in.next());
+		
+		Arrays.sort(cows);
+		in.close();
+		
+		int ab = cows[1] - cows[0] - 1;
+		int bc = cows[2] - cows[1] - 1;
+		
+		int min = 0;
+		int max = Math.max(ab, bc);;
+		if (ab == 1 || bc == 1) {
+			min = 1;
+		} else if (ab > 1 || bc > 1) {
+			min = 2;
+		}
+		
+		
+		PrintWriter out = new PrintWriter(new File("herding.out"));
+		System.out.println(min);
+		System.out.println(max);
+		out.println(min);
+		out.println(max);
+		out.close();
+	}
+}
