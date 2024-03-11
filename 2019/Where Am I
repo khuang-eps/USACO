@@ -1,0 +1,38 @@
+//package whereami;
+import java.io.*;
+import java.util.*;
+
+public class whereami {
+	  public static void main(String[] args) throws Exception {
+	    Scanner in = new Scanner(new File ("whereami.in"));
+	    int n = Integer.parseInt(in.next()); // number of mailboxes
+	    String m = in.next(); // string of mailboxes
+	    in.close();
+	    
+	    int k = 0; // final result
+	    
+    	HashSet<String> set = new HashSet<String>();
+	    for (int i = 1; i <= n; i++) { // length of string
+	    	boolean duplicate = false;
+    		for (int j = 0; j <= n - i; j++) {
+    			String b = m.substring(j, j + i);
+    			if (set.contains(b)) {
+    				duplicate = true;
+    				break;
+    			} else {
+    				set.add(b);
+    			}
+    		}
+    		
+    		if (!duplicate) {
+    			k = i;
+    			break;
+    		}
+	    }
+	    
+	    PrintWriter out = new PrintWriter(new File("whereami.out"));
+	    System.out.println(k);
+	    out.println(k);
+	    out.close();
+	  }
+}
