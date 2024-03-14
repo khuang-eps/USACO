@@ -1,0 +1,40 @@
+//package blist;
+
+import java.util.*;
+import java.io.*;
+
+public class blist {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("blist.in"));
+		int n = Integer.parseInt(in.next()); // # of cows to be milked
+		int[] s = new int[n]; // milking start times
+		int[] t = new int[n]; // milking end times
+		int[] b = new int[n]; // buckets needed for milking cows
+		
+		for (int i = 0; i < n; i++) {
+			s[i] = Integer.parseInt(in.next());
+			t[i] = Integer.parseInt(in.next());
+			b[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		int[] buckets = new int[1001]; // mark # of buckets needed per time unit
+		
+		for (int i = 0; i < n; i++) { // for each cow
+			for (int j = s[i]; j <= t[i]; j++) { // from timeframe s to t, b buckets are needed
+				buckets[j] += b[i];
+			}
+		}
+		
+		int result = buckets[0];
+		for (int i : buckets) {
+			if (i > result) {
+				result = i;
+			}
+		}
+		PrintWriter out = new PrintWriter(new File("blist.out"));
+		out.println(result); // return last element (max number of buckets used)
+		System.out.println(result);
+		out.close();
+	}
+}
