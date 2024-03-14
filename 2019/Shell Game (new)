@@ -1,0 +1,46 @@
+//package shell;
+
+import java.util.*;
+import java.io.*;
+
+public class shell {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("shell.in"));
+		int n = Integer.parseInt(in.next()); // number of times shells are swapped
+		
+		int[] a = new int[n]; // 1st swapped shell
+		int[] b = new int[n]; // 2nd swapped shell
+		int[] g = new int[n]; // Elsie's guess
+		
+		for (int x = 0; x < n; x++) {
+			a[x] = Integer.parseInt(in.next()) - 1;
+			b[x] = Integer.parseInt(in.next()) - 1;
+			g[x] = Integer.parseInt(in.next()) - 1;
+		}
+		
+		int[] scores = new int[3]; // scores for all 3 possible shell starting positions
+		
+		for (int p = 0; p < 3; p++) { // all 3 possibilities for shell's starting position
+			int[] game = new int[3]; // array to simulate shell game
+			game[p] = 1; // 1 -> pebble under shell | 0 -> empty shell
+			
+			for (int i = 0; i < n; i++) {
+				int temp = game[a[i]];
+				game[a[i]] = game[b[i]];
+				game[b[i]] = temp;
+				
+				if (game[g[i]] == 1) {
+					scores[p]++;
+				}
+			}
+		}
+		
+		in.close();
+		
+		int result = Math.max(scores[0], Math.max(scores[1], scores[2]));
+		PrintWriter out = new PrintWriter(new File("shell.out"));
+		out.println(result);
+		System.out.println(result);
+		out.close();
+	}
+}
