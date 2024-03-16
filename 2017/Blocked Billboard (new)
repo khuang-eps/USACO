@@ -1,0 +1,61 @@
+//package billboard;
+
+import java.util.*;
+import java.io.*;
+
+public class billboard {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("billboard.in"));
+		// b1[0] -> x1
+		// b1[1] -> y1
+		// b1[2] -> x2
+		// b1[3] -> y2
+		int[] b1 = new int[4];
+		// b2[0] -> x3
+		// b2[1] -> y3
+		// b2[2] -> x4
+		// b2[3] -> y4
+		int[] b2 = new int[4];
+		int[] t = new int[4];
+		for (int i = 0; i < 4; i++) {
+			b1[i] = Integer.parseInt(in.next());
+		}
+		for (int i = 0; i < 4; i++) {
+			b2[i] = Integer.parseInt(in.next());
+		}
+		for (int i = 0; i < 4; i++) {
+			t[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		int a1 = findArea(b1[0], b1[1], b1[2], b1[3]); // area of billboard 1 to-do: findArea function
+		int a2 = findArea(b2[0], b2[1], b2[2], b2[3]); // area of billboard 2
+		
+		int res = a1 - findOverlap(b1, t) + a2 - findOverlap(b2, t);
+		PrintWriter out = new PrintWriter(new File("billboard.out"));
+		out.println(res);
+		System.out.println(res);
+//		System.out.println(a1);
+//		System.out.println(a2);
+		out.close();
+	}
+	
+	public static int findOverlap(int[] b, int[] t) {
+		// bottom-left point
+		int x5 = Math.max(b[0], t[0]);
+		int y5 = Math.max(b[1], t[1]);
+		// top-right point
+		int x6 = Math.min(b[2], t[2]);
+		int y6 = Math.min(b[3], t[3]);
+		
+		if (x5 < x6 && y5 < y6) {
+			int area = findArea(x5, y5, x6, y6);
+			return area;
+		}
+		return 0;
+	}
+	
+	public static int findArea(int x1, int y1, int x2, int y2) {
+		return (x2 - x1) * (y2 - y1);
+	}
+}
