@@ -1,0 +1,39 @@
+//package shuffle;
+
+import java.util.*;
+import java.io.*;
+
+public class shuffle {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("shuffle.in"));
+		int N = Integer.parseInt(in.next());
+		
+		int[] n = new int[N]; // new positions per shuffle
+		for (int i = 0; i < N; i++) {
+			n[i] = Integer.parseInt(in.next()) - 1;
+		}
+		
+		int[] end = new int[N]; // ending positions
+		for (int i = 0; i < N; i++) {
+			end[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		int[] start = new int[N]; // initial positions
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < N; j++) {
+				start[j] = end[n[j]];
+			}
+			for (int j = 0; j < N; j++) { // update end
+				end[j] = start[j];
+			}
+		}
+		
+		PrintWriter out = new PrintWriter(new File("shuffle.out"));
+		for (int i : start) {
+			out.println(i);
+			System.out.println(i);
+		}
+		out.close();
+	}
+}
