@@ -1,0 +1,41 @@
+//package lostcow;
+
+import java.util.*;
+import java.io.*;
+
+public class lostcow {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("lostcow.in"));
+		int x = Integer.parseInt(in.next()); // Farmer John's location
+		int y = Integer.parseInt(in.next()); // Bessie's location
+		in.close();
+		
+		int pos = x;
+		int distance = 0;
+		int old = 0;
+		int count = 1;
+		while (true) {
+			old = pos; // previous position
+
+			pos = x + count;
+			if (count > 0) { // FJ moves to the right -> pos > old
+				if (y >= old && y <= pos) {
+					distance += Math.abs(y - old);
+					break;
+				}
+			} else { // FJ moves to the left -> pos < old
+				if (y <= old && y >= pos) {
+					distance += Math.abs(y - old);
+					break;
+				}
+			}
+			distance += Math.abs(pos - old);
+			count *= -2; // opposite direction, twice as far
+		}
+		
+		PrintWriter out = new PrintWriter(new File("lostcow.out"));
+		out.println(distance);
+		System.out.println(distance);
+		out.close();
+	}
+}
