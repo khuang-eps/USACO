@@ -1,0 +1,46 @@
+//package cowsignal;
+
+import java.util.*;
+import java.io.*;
+
+public class cowsignal {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("cowsignal.in"));
+		int m = Integer.parseInt(in.next());
+		int n = Integer.parseInt(in.next());
+		int k = Integer.parseInt(in.next());
+		
+		char[][] small = new char[m][n]; // original small signal
+		char[][] big = new char[m * k][n * k]; // enlarged signal k times larger
+		
+		for (int r = 0; r < m; r++) {
+			String row = in.next(); // next line from input
+			for (int c = 0; c < n; c++) {
+				small[r][c] = row.charAt(c);
+			}
+		}
+		in.close();
+		
+		for (int r = 0; r < m; r++) {
+			for (int a = r * k; a < r * k + k; a++) {
+				for (int c = 0; c < n; c++) {
+					for (int b = c * k; b < c * k + k; b++) {
+						big[a][b] = small[r][c];
+					}
+				}
+			}
+		}
+		
+		PrintWriter out = new PrintWriter(new File("cowsignal.out"));
+		for (int r = 0; r < big.length; r++) {
+			for (int c = 0; c < big[0].length; c++) {
+				System.out.print(big[r][c]);
+				out.print(big[r][c]);
+			}
+			System.out.println();
+			out.println();
+		}
+		
+		out.close();
+	}
+}
