@@ -1,0 +1,81 @@
+//package billboard;
+
+import java.util.*;
+import java.io.*;
+
+public class billboard {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("billboard.in"));
+		int[] bad = new int[4];
+		int[] good = new int[4];
+		
+		for (int i = 0; i < 4; i++) {
+			bad[i] = Integer.parseInt(in.next());
+		}
+		for (int i = 0; i < 4; i++) {
+			good[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		int tarp = 0; // area of the tarp (result)
+		
+		// 1 corner covered -> tarp = full area of bad billboard
+		// 2 corners covered -> tarp = remaining area of bad billboard (use findOverlap function)
+		// 3 corners covered -> not possible
+		// 4 corners covered -> none needed
+		
+		int covered = 0; // tally for how many points covered
+		// compare each bad billboard's coordinates with all good coordinates
+//		for (int i = 0; i < bad.length; i++) {
+//			int b = bad[i];
+			if (bad[0] > good[0] && bad[0] < good[2] && bad[1] > good[1] && bad[1] < good[3]) { // bottom right point
+				covered++;
+			}
+			if (bad[2] < good[2] && bad[2] > good[0] && bad[3] < good[3] && bad[3] > good[1]) { // top-right point
+				covered++;
+			}
+			if (bad[0] > good[0] && bad[0] < good[2] && bad[3] < good[3] && bad[3] > good[1]) { // top-left point
+				covered++;
+			}
+			if (bad[2] < good[2] && bad[2] > good[0] && bad[1] > good[1] && bad[1] < good[3]) { // bottom-right point
+				covered++;
+			}
+//		}
+		if (covered == 0 || covered == 1) {
+			tarp = findArea(bad[0], bad[1], bad[2], bad[3]);
+		} else if (covered == 2) {
+			tarp = findRemainder(bad, good);
+		}
+		// covered == 3 cannot exist
+		// covered == 4 would be tarp = 0 but that is already its default value
+		
+		PrintWriter out = new PrintWriter(new File("billboard.out"));
+		System.out.println(tarp);
+		out.println(tarp);
+		out.close();
+	}
+	
+	public static int findArea(int x5, int y5, int x6, int y6) {
+		return (x6 - x5) * (y6 - y5);
+	}
+	
+	public static int findRemainder(int[] b, int[] g) {
+			// bottom-left point
+			int x5 = Math.max(b[0], g[0]);
+			int y5 = Math.max(b[1], g[1]);
+			// top-right point
+			int x6 = Math.min(b[2], g[2]);
+			int y6 = Math.min(b[3], g[3]);
+			
+//			if (x5 < x6 && y5 < y6) {
+				int overlap = findArea(x5, y5, x6, y6);
+				int area = findArea(b[0], b[1], b[2], b[3]);
+//				System.out.println(overlap);
+//				System.out.println(area);
+				return area - overlap;
+//			}
+//			return 0;
+	}
+	// findArea function
+	// findOverlap function
+}
