@@ -1,0 +1,37 @@
+//package breedflip;
+
+import java.util.*;
+import java.io.*;
+
+public class breedflip {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("breedflip.in"));
+		int n = Integer.parseInt(in.next());
+		String a = in.next();
+		String b = in.next();
+		
+		int pos = 0;
+		int res = 0;
+		while (pos < n) {
+			if (a.charAt(pos) != b.charAt(pos)) {
+				for (int i = pos; i < n; i++) {
+					if (a.charAt(pos) == b.charAt(pos)) {
+						break;
+					} else {
+						pos++;
+					}
+				}
+				res++;
+			} else {
+				pos++;
+			}
+			
+		}
+		in.close();
+		
+		PrintWriter out = new PrintWriter(new File("breedflip.out"));
+		System.out.println(res);
+		out.println(res);
+		out.close();
+	}
+}
