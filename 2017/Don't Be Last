@@ -1,0 +1,62 @@
+//package notlast;
+
+import java.util.*;
+import java.io.*;
+
+public class notlast {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("notlast.in"));
+		int n = Integer.parseInt(in.next());
+		
+		TreeMap<String, Integer> cows = new TreeMap<>();
+		int a = Integer.MAX_VALUE;
+		int b = Integer.MAX_VALUE;
+		String bs = "";
+		for (int i = 0; i < n; i++) {
+			String k = in.next();
+			int v = Integer.parseInt(in.next());
+			if (cows.containsKey(k)) {
+				cows.replace(k, cows.get(k) + v); // add to value
+			} else {
+				cows.put(k, v);
+			}
+		}
+		in.close();
+		
+		for (String cow : cows.keySet()) {
+			if (cows.get(cow) < a) {
+				b = a;
+				a = cows.get(cow);
+			} else if (cows.get(cow) > a && cows.get(cow) < b) {
+				b = cows.get(cow);
+			}
+		}
+		
+		int sl = 0; // number of cows that have second-least amount of milk
+		String res = "";
+		for (String cow : cows.keySet()) {
+			if (cows.get(cow) == b) {
+				sl++;
+				bs = cow;
+			}
+		}
+		
+		PrintWriter out = new PrintWriter(new File("notlast.out"));
+		
+		
+		if (cows.size() == 1) {
+			res = cows.firstKey();
+		} else if (sl > 1 || a == b || b == Integer.MAX_VALUE) { // >1 cow with 2nd-last amount of milk OR all cows have same amount of milk
+			res = "Tie";
+		} else {
+			res = bs;
+		}
+		
+		
+		out.println(res);
+		System.out.println(res);
+		out.close();
+		
+		
+	}
+}
