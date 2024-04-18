@@ -1,0 +1,51 @@
+//package crossroad;
+
+import java.util.*;
+import java.io.*;
+
+public class crossroad {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("crossroad.in"));
+		int n = Integer.parseInt(in.next());
+		TreeMap<Integer, ArrayList<Integer>> cross = new TreeMap<>(); // key = id, values = pos
+		for (int i = 0; i < n; i++) {
+			ArrayList<Integer> temp = new ArrayList<>(); // temp arraylist to insert values
+			int id = Integer.parseInt(in.next());
+			int pos = Integer.parseInt(in.next());
+			
+			if (!cross.containsKey(id)) { // new
+				temp.add(pos);
+				cross.put(id, temp);
+			} else { // old -> update
+				temp = cross.get(id); // set temp to old arraylist
+				temp.add(pos); // add current new value
+				cross.put(id, temp);
+			}
+		}
+		in.close();
+		
+		int res = 0;
+		for (int i : cross.keySet()) {
+			ArrayList<Integer> list = new ArrayList<>();
+			list = cross.get(i);
+			int prev = 0; // previous int
+			int curr = 0; // current int
+			
+			prev = list.get(0); // corner case for j = 0
+			for (int j = 1; j < list.size(); j++) {
+				curr = list.get(j);
+				
+				if (curr != prev) {
+					res++;
+				}
+				
+				prev = curr;// update prev when iteration finishes
+			}
+		}
+		
+		PrintWriter out = new PrintWriter(new File("crossroad.out"));
+		out.println(res);
+		System.out.println(res);
+		out.close();
+	}
+}
