@@ -1,0 +1,35 @@
+//package hps;
+
+import java.util.*;
+import java.io.*;
+
+public class hps {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("hps.in"));
+		int n = Integer.parseInt(in.next());
+		int[] c1 = new int[n]; // cow 1
+		int[] c2 = new int[n]; // cow 2
+
+		for (int i = 0; i < n; i++) {
+			c1[i] = Integer.parseInt(in.next());
+			c2[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+
+		int a = 0; // 1231
+		int b = 0; // 1321
+
+		for (int i = 0; i < c1.length; i++) {
+			if ((c1[i] == 1 && c2[i] == 2) || (c1[i] == 2 && c2[i] == 3) || (c1[i] == 3 && c2[i] == 1)) {
+				a++;
+			} else if ((c1[i] == 1 && c2[i] == 3) || (c1[i] == 3 && c2[i] == 2) || (c1[i] == 2 && c2[i] == 1)) {
+				b++;
+			}
+		}
+
+		PrintWriter out = new PrintWriter(new File("hps.out"));
+		out.println(Math.max(a, b));
+		System.out.println(Math.max(a, b));
+		out.close();
+	}
+}
