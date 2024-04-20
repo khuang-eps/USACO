@@ -1,0 +1,211 @@
+//package tttt;
+
+import java.util.*;
+import java.io.*;
+
+public class tttt {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("tttt.in"));
+		char[][] grid = new char[3][3]; // 3x3 tic-tac-toe grid
+		
+		for (int r = 0; r < 3; r++) {
+			String row = in.next();
+			for (int c = 0; c < 3; c++) {
+				grid[r][c] = row.charAt(c);
+			}
+		}
+		in.close();
+		
+		int ind = 0; // individual wins
+		int team = 0; // team wins
+		
+		// vertical
+		HashSet<Character> cows = new HashSet<>();
+		HashSet<String> teams = new HashSet<>(); // keep track of existing teams
+		
+		for (int c = 0; c < 3; c++) {
+			
+			for (int r = 0; r < 3; r++) {
+				cows.add(grid[r][c]);
+			}
+			
+			
+			char[] temp = new char[cows.size()];
+			
+			int pos = 0;
+			for (Character cow : cows) {
+				temp[pos] = cow;
+				pos++;
+			}
+			
+			Arrays.sort(temp);
+			
+			String str = "";
+			for (int i = 0; i < temp.length; i++) {
+				str += temp[i];
+			}
+			
+			if (!teams.contains(str)) {
+				
+				if (cows.size() == 2) { // 2 distinct cows present
+					team++;
+					teams.add(str);
+				} else if (cows.size() == 1) { // 1 cow present
+					ind++;
+					teams.add(str);
+				}
+			}
+			
+			cows.clear();
+		}
+		
+		// horizontal
+		for (int r = 0; r < 3; r++) {
+			for (int c = 0; c < 3; c++) {
+				cows.add(grid[r][c]);
+			}
+			
+			char[] temp = new char[cows.size()];
+			
+			int pos = 0;
+			for (Character cow : cows) {
+				temp[pos] = cow;
+				pos++;
+			}
+			
+			Arrays.sort(temp);
+			
+			String str = "";
+			for (int i = 0; i < temp.length; i++) {
+				str += temp[i];
+			}
+			
+			if (!teams.contains(str)) {
+				
+				if (cows.size() == 2) { // 2 distinct cows present
+					team++;
+					teams.add(str);
+				} else if (cows.size() == 1) { // 1 cow present
+					ind++;
+					teams.add(str);
+				}
+			}
+			
+			cows.clear();
+		}
+		
+		// diagonal
+		
+		//
+		for (int i = 0; i < 3; i++) { // bl-tr
+			cows.add(grid[i][i]);
+		}
+		//
+		
+		char[] temp = new char[cows.size()];
+		
+		int pos = 0;
+		for (Character cow : cows) {
+			temp[pos] = cow;
+			pos++;
+		}
+		
+		Arrays.sort(temp);
+		
+		String str = "";
+		for (int i = 0; i < temp.length; i++) {
+			str += temp[i];
+		}
+		
+		if (!teams.contains(str)) {
+			
+			if (cows.size() == 2) { // 2 distinct cows present
+				team++;
+				teams.add(str);
+			} else if (cows.size() == 1) { // 1 cow present
+				ind++;
+				teams.add(str);
+			}
+		}
+		cows.clear();
+		
+ 
+		int j = 0;
+		for (int i = 2; i >= 0; i--) { // tl-br
+			cows.add(grid[i][j]);	
+			j++;
+		}
+		
+		temp = new char[cows.size()];
+		
+		pos = 0;
+		for (Character cow : cows) {
+			temp[pos] = cow;
+			pos++;
+		}
+		
+		Arrays.sort(temp);
+		
+		str = "";
+		for (int i = 0; i < temp.length; i++) {
+			str += temp[i];
+		}
+		
+		if (!teams.contains(str)) {
+			
+			if (cows.size() == 2) { // 2 distinct cows present
+				team++;
+				teams.add(str);
+			} else if (cows.size() == 1) { // 1 cow present
+				ind++;
+				teams.add(str);
+			}
+		}
+		
+		
+		PrintWriter out = new PrintWriter(new File("tttt.out"));
+		System.out.println(ind);
+		System.out.println(team);
+		out.println(ind);
+		out.println(team);
+		out.close();
+	}
+	
+//	public static char teamisnew(HashSet<String> teams, String str) {
+//		if (!teams.contains(str)) {
+//			
+//			if (str.length() == 2) { // 2 distinct cows present
+//				return 't';
+//			} else if (str.length() == 1) { // 1 cow present
+//				return 'i';
+//			}
+//		}
+//		
+//		return 'n';
+//	}
+//	
+//	public static String createrow(HashSet<Character> cows, char[][] grid, int i) {
+//		String res = "";
+//			
+//			for (int j = 0; j < 3; j++) {
+//				cows.add(grid[i][j]);
+//			}
+//			
+//			
+//			char[] temp = new char[cows.size()];
+//			
+//			int pos = 0;
+//			for (Character cow : cows) {
+//				temp[pos] = cow;
+//				pos++;
+//			}
+//			
+//			Arrays.sort(temp);
+//			
+//			for (int n = 0; n < temp.length; n++) {
+//				res += temp[n];
+//			}
+////		}
+//		return res;
+//	}	
+}
