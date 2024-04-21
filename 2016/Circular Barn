@@ -1,0 +1,35 @@
+//package cbarn;
+
+import java.util.*;
+import java.io.*;
+
+public class cbarn {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("cbarn.in"));
+		int n = Integer.parseInt(in.next());
+		int[] barn = new int[n];
+		for (int i = 0; i < n; i++) {
+			barn[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		int res = Integer.MAX_VALUE;
+		for (int i = 0; i < n; i++) { // try out every starting point
+			int pr = 0; // possible result
+			int pos = 0;
+			for (int j = i; j < i + n; j++) {
+				pr += barn[j % n] * (pos);
+				pos++;
+			}
+			
+			if (pr < res) {
+				res = pr;
+			}
+		}
+		
+		PrintWriter out = new PrintWriter(new File("cbarn.out"));
+		System.out.println(res);
+		out.println(res);
+		out.close();
+	}
+}
