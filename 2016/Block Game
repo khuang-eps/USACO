@@ -1,57 +1,41 @@
-//package yearofcow;
+//package blockgame;
 
 import java.util.*;
 import java.io.*;
 
-public class yearofcow {
+public class blocks {
 	public static void main(String[] args) throws Exception {
-//		Scanner in = new Scanner(new File("yearofcow.in"));
-		Scanner in = new Scanner(System.in);
-		HashMap<String, Integer> zodiacIndex = new HashMap<>();
-		String tempstr = "Ox Tiger Rabbit Dragon Snake Horse Goat Monkey Rooster Dog Pig Rat";
-		String[] temp = tempstr.split(" ");
-		for (int i = 0; i < 12; i++) {
-			zodiacIndex.put(temp[i], i); // zodiac + order
-		}
-		
+		Scanner in = new Scanner(new File("blocks.in"));
 		int n = Integer.parseInt(in.next());
 		
-		HashMap<String, Integer> yearBorn = new HashMap<>();
-		yearBorn.put("Bessie", 0);
+		int[] res = new int[26];
 		
-		HashMap<String, String> cowZodiacs = new HashMap<>();
-		cowZodiacs.put("Bessie", "Ox");
 		for (int i = 0; i < n; i++) {
+			int[] a = new int[26];
+			int[] b = new int[26];
+			String sa = in.next(); // side 1
+			String sb = in.next(); // side 2
 			
-			String[] sentence = new String[8];
-			for (int j = 0; j < 8; j++) {
-				sentence[j] = in.next();
+			for (int j = 0; j < sa.length(); j++) {
+				a[sa.charAt(j) - 'a']++;
+			}
+			for (int j = 0; j < sb.length(); j++) {
+				b[sb.charAt(j) - 'a']++;
 			}
 			
-			String cow1 = sentence[0]; // name of new cow mentioned at first word - Mildred
-			String cow1zodiac = sentence[4]; // zodiac of new cow - Dragon
-			cowZodiacs.put(cow1, cow1zodiac);
-			String cow2 = sentence[7]; // name of cow already mentioned at last word of sentence - Bessie
-			int diff = 0;
-			if (sentence[3].equals("previous")) {
-				if (zodiacIndex.get(cowZodiacs.get(cow2)) > zodiacIndex.get(cowZodiacs.get(cow1))) { // doesn't circle back
-					diff = zodiacIndex.get(cowZodiacs.get(cow2)) - zodiacIndex.get(cowZodiacs.get(cow1));
-				} else { // goes back to earlier zodiac
-					diff = 12 - zodiacIndex.get(cowZodiacs.get(cow1)) + zodiacIndex.get(cowZodiacs.get(cow2));
-				}
-				yearBorn.put(cow1, yearBorn.get(cow2) - diff);
-			} else if (sentence[3].equals("next")) {
-				if (zodiacIndex.get(cowZodiacs.get(cow2)) >= zodiacIndex.get(cowZodiacs.get(cow1))) { // circles back
-					diff = 12 - zodiacIndex.get(cowZodiacs.get(cow2)) + zodiacIndex.get(cowZodiacs.get(cow1));
-				} else { // doesn't circle back
-					diff = zodiacIndex.get(cowZodiacs.get(cow1)) - zodiacIndex.get(cowZodiacs.get(cow2));
-				}
-				yearBorn.put(cow1, yearBorn.get(cow2) + diff);
+			for (int j = 0; j < 26; j++) {
+				res[j] += Math.max(a[j], b[j]);
 			}
 		}
-		in.close();			
+		in.close();
 		
 		
-		System.out.println(Math.abs(yearBorn.get("Elsie")));
+		
+		PrintWriter out = new PrintWriter(new File("blocks.out"));
+		for (int i : res) {
+			System.out.println(i);
+			out.println(i);
+		}
+		out.close();
 	}
 }
