@@ -1,0 +1,67 @@
+//package mowing;
+
+import java.util.*;
+import java.io.*;
+
+public class mowing {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("mowing.in"));
+		int n = Integer.parseInt(in.next());
+		int[][] cells = new int[2000][2000]; // cells with row and column length of n * s * 2
+		String[] dir = new String[n]; // direction of each segment
+		int[] dur = new int[n]; // duration in which FJ goes towards the direction
+		for (int i = 0; i < n; i++) {
+			dir[i] = in.next();
+			dur[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		int time = 0; // track time
+		int res = Integer.MAX_VALUE;
+		// FJ's location
+		int x = 1000;
+		int y = 1000;
+		// FJ's direction
+		int xd = 0;
+		int yd = 0;
+		for (int i = 0; i < n; i++) { // for each segment FJ goes
+			if (dir[i].equals("N")) { // north
+				xd = 0;
+				yd = -1;
+			} else if (dir[i].equals("S")) { //south
+				xd = 0;
+				yd = 1;
+			} else if (dir[i].equals("E")) { // east
+				xd = 1;
+				yd = 0;
+			} else { // west
+				xd = -1;
+				yd = 0;
+			}
+			
+			for (int j = 0; j < dur[i]; j++) { // for the duration in which FJ goes in the direction
+				x += xd;
+				y += yd;
+				System.out.println("x: " + x + ", y: " + y);
+				if (cells[x][y] > 0) { // FJ has gone to cell already
+					int pres = time - cells[x][y]; // possible result
+					System.out.println("pres: " + pres);
+					if (pres < res) {
+						res = pres;
+					}
+				}
+				cells[x][y] = time;
+				time++;
+			}
+		}
+		
+		if (res == Integer.MAX_VALUE) {
+			res = -1;
+		}
+		
+		PrintWriter out = new PrintWriter(new File("mowing.out"));
+		out.println(res);
+		System.out.println(res);
+		out.close();
+	}
+}
