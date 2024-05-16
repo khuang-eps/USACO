@@ -1,0 +1,48 @@
+//package circlecross;
+
+import java.util.*;
+import java.io.*;
+
+public class circlecross {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("circlecross.in"));
+		String str = in.next();
+		char[] road = str.toCharArray();
+		in.close();
+		
+		int[] start = new int[26]; // starting index of all paths
+		int[] end = new int[26]; // ending index of all paths
+		for (int i = 0; i < 26; i++) {
+			start[i] = -1;
+			end[i] = -1;
+		}
+		for (int i = 0; i < road.length; i++) { // find start values
+			if (start[road[i] - 'A'] == -1) { // if current letter hasn't been found
+				start[road[i] - 'A'] = i;
+			}
+		}
+		for (int i = 0; i < road.length; i++) { // find end values
+			if (end[road[i] - 'A'] == -1 && i != start[road[i] - 'A']) {
+				end[road[i] - 'A'] = i;
+			}
+		}
+		
+		
+		HashSet<String> overlap = new HashSet<String>();
+		for (int i = 0; i < road.length; i++) {
+			for (int j = start[road[i] - 'A'] + 1; j < end[road[i] - 'A']; j++) {
+				if (end[road[j] - 'A'] > end[road[i] - 'A']) {
+					overlap.add("" + road[i] + road[j]); 
+				}
+			}
+		}
+		
+		int res = overlap.size();
+		
+		
+		PrintWriter out = new PrintWriter(new File("circlecross.out"));
+		System.out.println(res);
+		out.println(res);
+		out.close();
+	}
+}
