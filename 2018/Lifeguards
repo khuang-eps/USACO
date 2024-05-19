@@ -1,0 +1,56 @@
+//package lifeguards;
+
+import java.util.*;
+import java.io.*;
+
+public class lifeguards {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("lifeguards.in"));
+		int n = Integer.parseInt(in.next());
+		
+		int[] start = new int[n];
+		int[] end = new int[n];
+		int len = 0;
+		for (int i = 0; i < n; i++) {
+			start[i] = Integer.parseInt(in.next());
+			end[i] = Integer.parseInt(in.next());
+			
+			if (end[i] > len) {
+				len = end[i];
+			}
+		}
+		in.close();
+		
+		int res = 0;
+		for (int i = 0; i < n; i++) { // find & compare all possible remaining shift times
+			int[] shifts = new int[len];
+			
+			for (int j = 0; j < n; j++) {
+				for (int k = start[j]; k < end[j]; k++) { // fill out shifts array
+					shifts[k]++;
+				}
+			}
+			
+			for (int j = start[i]; j < end[i]; j++) {
+				shifts[j]--;
+			}
+			
+			int pres = 0; // result of current possibility
+			for (int j = 0; j < shifts.length; j++) {
+				if (shifts[j] > 0) {
+					pres++;
+				}
+			}
+			
+			res = Math.max(res, pres);
+		}
+		
+				
+		
+
+		System.out.println(res);
+		PrintWriter out = new PrintWriter(new File("lifeguards.out"));
+		out.println(res);
+		out.close();
+	}
+}
