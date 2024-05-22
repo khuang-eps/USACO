@@ -1,0 +1,58 @@
+//package gymnastics;
+
+import java.util.*;
+import java.io.*;
+
+public class gymnastics {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("gymnastics.in"));
+		int k = Integer.parseInt(in.next());
+		int n = Integer.parseInt(in.next());
+		int[][] ranks = new int[k][n];
+		for (int r = 0; r < k; r++) {
+			for (int c = 0; c < n; c++) {
+				ranks[r][c] = Integer.parseInt(in.next());
+			}
+		}
+		in.close();
+		
+		int res = 0;
+		for (int i = 0; i < n; i++) {
+			for (int j = i + 1; j < n; j++) { // compare with cows after cow at i
+				int[] count = new int[2];
+				
+				for (int r = 0; r < k; r++) {
+					int c1 = index(ranks[r], ranks[0][i]);
+					int c2 = index(ranks[r], ranks[0][j]);
+
+					if (c1 > c2) {
+						count[0]++;
+					} else if (c1 < c2) {
+						count[1]++;
+					}
+				}	
+				
+				if (count[0] == 0 && count[1] == k) { // consistent pair - one cow always ranked better than the other
+					res++;
+				} else if (count[1] == 0 && count[0] == k) {
+					res++;
+				}
+			}
+		}
+		
+		PrintWriter out = new PrintWriter(new File("gymnastics.out"));
+		out.println(res);
+		System.out.println(res);
+		out.close();
+	}
+	
+	public static int index(int[] ranks, int id) {
+		for (int i = 0; i < ranks.length; i++) {
+			if (ranks[i] == id) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+}
