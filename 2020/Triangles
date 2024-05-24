@@ -1,0 +1,50 @@
+//package triangles;
+
+import java.util.*;
+import java.io.*;
+
+public class triangles {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("triangles.in"));
+		int n = Integer.parseInt(in.next());
+		
+		int[] x = new int[n];
+		int[] y = new int[n];
+		for (int i = 0; i < n; i++) {
+			x[i] = Integer.parseInt(in.next());
+			y[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		
+		int res = 0; // largest area possible
+		for (int i = 0; i < n; i++) { // point A
+			int[] a = {x[i], y[i]};
+			int[] b = new int[2]; // shares x-value with A
+			int[] c = new int[2]; // shares y-value with A
+			
+			for (int j = 0; j < n; j++) { // point B
+				if (x[j] == a[0] && y[j] != a[1]) { // shared x-value, different y-value
+					b[0] = x[j];
+					b[1] = y[j];
+					
+					for (int k = 0; k < n; k++) { // point C
+						if (y[k] == a[1] && x[k] != a[0]) { // shared y-value, different x-value
+							c[0] = x[k];
+							c[1] = y[k];
+							
+							int pres = Math.abs(b[1] - a[1]) * Math.abs(c[0] - a[0]);
+							res = Math.max(res, pres);
+						}
+					}
+				}
+			}
+		}
+		
+		
+		PrintWriter out = new PrintWriter(new File("triangles.out"));
+		System.out.println(res);
+		out.println(res);
+		out.close();
+	}
+}
