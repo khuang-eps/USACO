@@ -1,0 +1,44 @@
+//package countliars;
+
+import java.util.*;
+import java.io.*;
+
+public class countliars {
+	public static void main(String[] args) throws Exception {
+//		Scanner in = new Scanner(new File("countliars.in"));
+		Scanner in = new Scanner(System.in);
+		int n = Integer.parseInt(in.next());
+		String[] dir = new String[n];
+		int[] num = new int[n];
+		
+		for (int i = 0; i < n; i++) {
+			dir[i] = in.next();
+			num[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		int min = Integer.MAX_VALUE;
+		for (int i = 0; i < n; i++) {
+			int count = 0;
+			for (int j = 0; j < n; j++) {
+				if (j == i) {
+					continue;
+				}
+				
+				int n1 = num[i];
+				String d2 = dir[j];
+				int n2 = num[j];
+				
+				if (n2 > n1 && d2.equals("G")) { // should be L to be valid
+					count++;
+				} else if (n2 < n1 && d2.equals("L")) { // should be G to be valid
+					count++;
+				}
+			}
+			
+			min = Math.min(min, count);
+		}
+		
+		System.out.println(min);
+	}
+}
