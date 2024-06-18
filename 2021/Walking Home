@@ -1,0 +1,172 @@
+//package walkinghome;
+
+import java.util.*;
+import java.io.*;
+
+public class walkinghome {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(System.in);
+		int t = Integer.parseInt(in.next());
+		for (int i = 0; i < t; i++) {
+			int n = Integer.parseInt(in.next());
+			int k = Integer.parseInt(in.next());
+			
+			char[][] field = new char[n][n];
+			for (int r = 0; r < n; r++) {
+				String s = in.next();
+				for (int c = 0; c < n; c++) {
+					field[r][c] = s.charAt(c);
+				}
+			}
+			
+			
+			int res = 0;
+			
+			if (k >= 1) { // at least 1 turn
+				 // at most 2 possible 1-turn routes
+				int blocked = 0;
+				
+				//direction 1: RD
+				for (int c = 0; c <= n - 1; c++) {
+					if (field[0][c] == 'H') {
+						blocked++;
+					}
+				}
+				for (int r = 1; r <= n - 1; r++) {
+					if (field[r][n-1] == 'H') {
+						blocked++;
+					}
+				}
+				
+				if (blocked == 0) {
+					res++;
+				}
+				
+				// direction 2: DR
+				blocked = 0;
+				for (int r = 0; r <= n - 1; r++) {
+					if (field[r][0] == 'H') {
+						blocked++;
+					}
+				}
+				for (int c = 1; c <= n - 1; c++) {
+					if (field[n-1][c] == 'H') {
+						blocked++;
+					}
+				}
+				
+				if (blocked == 0) {
+					res++;
+				}
+			}
+			
+			if (k >= 2) {
+				int blocked = 0;
+				// direction 1: RDR
+				for (int c = 1; c <= n - 2; c++) {
+					blocked = 0;
+					for (int a = 0; a <= c; a++) {
+						if (field[0][a] == 'H') { blocked++; }
+					}
+					
+					for (int a = c + 1; a <= n - 1; a++) { // changed a = c to a = c + 1
+						if (field[n-1][a] == 'H') { blocked++; }
+					}
+					
+					for (int b = 1; b <= n - 1; b++) {
+						if (field[b][c] == 'H') { blocked++; }
+					}
+					
+					if (blocked == 0) {
+						res++;
+					}
+				}
+				
+				// direction 2: DRD
+				
+				for (int r = 1; r <= n - 2; r++) {
+					blocked = 0;
+					for (int b = 0; b <= r; b++) {
+						if (field[b][0] == 'H') { blocked++; }
+					}
+					
+					for (int b = r + 1; b <= n - 1; b++) { // changed b = r to b = r + 1
+						if (field[b][n-1] == 'H') { blocked++; }
+					}
+					
+					for (int a = 1; a <= n - 1; a++) {
+						if (field[r][a] == 'H') { blocked++; }
+					}
+					
+					if (blocked == 0) {
+						res++;
+					}
+				}
+			}
+			
+			
+			if (k >= 3) {
+				int blocked = 0;
+				// direction 1: rdrd
+				for (int r = 1; r <= n - 2; r++) {
+					for (int c = 1; c <= n - 2; c++) {
+						blocked = 0;
+						// 1st seg
+						for (int a = 0; a <= c; a++) {
+							if (field[0][a] == 'H') { blocked++; }
+						}
+						// 2nd seg
+						for (int b = 1; b <= r; b++) {
+							if (field[b][c] == 'H') { blocked++; }
+						}
+						// 3rd seg
+						for (int a = c + 1; a <= n - 1; a++) {
+							if (field[r][a] == 'H') { blocked++; }
+						}
+						// 4th seg
+						for (int b = r + 1; b <= n - 1; b++) {
+							if (field[b][n - 1] == 'H') { blocked++; }
+						}
+						
+						if (blocked == 0) {
+							res++;
+						}
+					}
+				}
+				
+				// direction 2: drdr
+				for (int r = 1; r <= n - 2; r++) {
+					for (int c = 1; c <= n - 2; c++) {
+						blocked = 0;
+						// 1st seg
+						for (int b = 0; b <= r; b++) {
+							if (field[b][0] == 'H') { blocked++; }
+						}
+						// 2nd seg
+						for (int a = 1; a <= c; a++) {
+							if (field[r][a] == 'H') { blocked++; }
+						}
+						// 3rd seg
+						for (int b = r + 1; b <= n - 1; b++) {
+							if (field[b][c] == 'H') { blocked++; }
+						}
+						// 4th seg
+						for (int a = c + 1; a <= n - 1; a++) {
+							if (field[n - 1][a] == 'H') { blocked++; }
+						}
+						
+						if (blocked == 0) {
+							res++;
+						}
+					}
+				}
+				
+			}
+			
+			System.out.println(res);
+		}
+		in.close();
+		
+		
+	}
+}
