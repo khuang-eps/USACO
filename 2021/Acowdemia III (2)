@@ -1,0 +1,63 @@
+//package acowdemia3;
+
+import java.util.*;
+import java.io.*;
+
+public class acowdemia3 {
+	public static void main(String[] args) throws Exception {
+//		Scanner in = new Scanner(new File("acowdemia3.in"));
+		Scanner in = new Scanner(System.in);
+		int n = Integer.parseInt(in.next());
+		int m = Integer.parseInt(in.next());
+		
+		char[][] grid = new char[n + 2][m + 2];
+		
+		for (int r = 1; r <= n; r++) {
+			String row = in.next();
+			for (int c = 1; c <= m; c++) {
+				grid[r][c] = row.charAt(c - 1);
+			}
+		}		
+		in.close();
+		
+		int res = 0;
+		for (int r = 1; r <= n; r++) {
+			for (int c = 1; c <= m; c++) {
+				if (grid[r][c] == 'G' && ((grid[r][c - 1] == 'C' && grid[r][c + 1] == 'C') || (grid[r + 1][c] == 'C' && grid[r - 1][c] == 'C'))) {
+					grid[r][c] = '.';
+					res++;
+				}
+			}
+		}
+		
+		for (int r = 1; r <= n; r++) {
+			for (int c = 1; c <= m; c++) {
+				if (grid[r][c] == 'C') { // current point is a cow
+					if (grid[r + 1][c - 1] == 'C') { // bottom left point is a cow
+						if (grid[r][c - 1] == 'G') {
+							grid[r][c - 1] = '.';
+							res++;
+						} else if (grid[r + 1][c] == 'G') {
+							grid[r + 1][c] = '.';
+							res++;
+						}
+					} 
+					if (grid[r + 1][c + 1] == 'C') { // bottom right point is a cow
+						if (grid[r][c + 1] == 'G') {
+							grid[r][c + 1] = '.';
+							res++;
+						} else if (grid[r + 1][c] == 'G') {
+							grid[r + 1][c] = '.';
+							res++;
+						}
+					}
+				}
+			}
+		}
+		
+		System.out.println(res);
+	}
+}
+
+
+
