@@ -24,6 +24,18 @@ public class acowdemia1 {
 			j++;
 		}
 		
+		
+//		Part 1: Calculate initial h-index
+//		1. Sort highest to lowest so there is no need to go back
+//		2. If (current element) < i + 1 (less than # of elems) then h is the current index (i)
+//		
+//		Part 2: L
+//		1. If L can be added: If (element right after final element) = current h-index, L can be added
+//		2. Find # of elements in original h-index that = h-index (k)
+//		3. If k <= h-index + 1 -> add 1 to h-index
+//		NOTE: L can only increase h-index by 1
+		
+		
 		// P1: find initial h-index
 		int h = 0;
 		int end = 0;
@@ -38,7 +50,7 @@ public class acowdemia1 {
 		// P2: L
 		if (end < n && c[end] == h) { // can
 			int k = 0;
-			for (int i = 0; i < end; i++) {
+			for (int i = 0; i < end; i++) { // enough
 				if (c[i] == h) {
 					k++;
 				}
