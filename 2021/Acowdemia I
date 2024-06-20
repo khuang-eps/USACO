@@ -1,0 +1,54 @@
+//package acowdemia1;
+
+import java.util.*;
+import java.io.*;
+
+public class acowdemia1 {
+	public static void main(String[] args) throws Exception {
+//		Scanner in = new Scanner(new File("acowdemia1.in"));
+		Scanner in = new Scanner(System.in);
+		int n = Integer.parseInt(in.next());
+		int l = Integer.parseInt(in.next());
+		
+		int[] temp = new int[n];
+		for (int i = 0; i < n; i++) {
+			temp[i] = Integer.parseInt(in.next());
+		}
+		
+		// sort highest to lowest
+		int[] c = new int[n];
+		int j = 0;
+		Arrays.sort(temp);
+		for (int i = n - 1; i >= 0; i--) {
+			c[j] = temp[i];
+			j++;
+		}
+		
+		// P1: find initial h-index
+		int h = 0;
+		int end = 0;
+		for (int i = 0; i < n; i++) {
+			if (c[i] < i + 1) {
+				h = i;
+				end = i;
+				break;
+			}
+		}
+		
+		// P2: L
+		if (end < n && c[end] == h) { // can
+			int k = 0;
+			for (int i = 0; i < end; i++) {
+				if (c[i] == h) {
+					k++;
+				}
+			}
+			
+			if (k + 1 <= l) {
+				h++;
+			}
+		}
+		System.out.println(h);
+		in.close();
+	}
+}
