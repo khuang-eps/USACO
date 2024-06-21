@@ -1,0 +1,47 @@
+//package cwfence;
+
+import java.util.*;
+import java.io.*;
+
+public class cwfence {
+	public static void main(String[] args) throws Exception {
+//		Scanner in = new Scanner(new File("cwfence.in"));
+		Scanner in = new Scanner(System.in);
+		int n = Integer.parseInt(in.next());
+		
+//		ALGORITHM
+//		Find direction of fence path based on the sum of right angles formed by each adjacent pair of directions:
+//		CCW: SE, EN, NW, WS (+90 degrees)
+//		CW: WN, NE, ES, SE (-90 degrees)
+		
+		for (int i = 0; i < n; i++) { // per fence path/test case
+			String path = in.next();
+			
+			int res = 0;
+						
+			for (int j = 0; j < path.length() - 1; j++) {
+				String seq = "" + path.charAt(j) + path.charAt(j + 1);
+				
+				if (seq.equals("SE") || seq.equals("EN") || seq.equals("NW") || seq.equals("WS")) {
+					res += 90;
+				} else if (seq.equals("WN")  || seq.equals("NE") || seq.equals("ES") || seq.equals("SW")){
+					res -= 90;
+				}
+			}
+			
+			String s = "" + path.charAt(path.length() - 1) + path.charAt(0);
+			if (s.equals("SE") || s.equals("EN") || s.equals("NW") || s.equals("WS")) {
+				res += 90;
+			} else if (s.equals("WN") || s.equals("NE") || s.equals("ES") || s.equals("SW")) {
+				res -= 90;
+			}
+						
+			if (res == 360) {
+				System.out.println("CCW");
+			} else if (res == -360) {
+				System.out.println("CW");
+			}
+		}
+		in.close();
+	}
+}
