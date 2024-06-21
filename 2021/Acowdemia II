@@ -1,0 +1,86 @@
+//package acowdemia2;
+
+import java.util.*;
+import java.io.*;
+
+public class acowdemia2 {
+	public static void main(String[] args) throws Exception {
+//		Scanner in = new Scanner(new File("acowdemia2.in"));
+		Scanner in = new Scanner(System.in);
+		int k = Integer.parseInt(in.next());
+		int n = Integer.parseInt(in.next());
+		
+		// not in alphabetical order and later: 1
+		// in alphabetical order and later: ?
+		// not in alphabetical order and before: 0
+		// in alphabetical order and before: ?
+		
+		HashMap<String, Integer> ni = new HashMap<>(); // name + index
+		for (int i = 0; i < n; i++) {
+			ni.put(in.next(), i);
+		}
+		char[][] res = new char[n][n];
+		
+		String[][] p = new String[k][n]; // publications
+		for (int r = 0; r < k; r++) {
+			for (int c = 0; c < n; c++) {
+				p[r][c] = in.next();
+			}
+		}
+		
+		in.close();
+		
+//		1. Input
+//			i. store list of cow names + index in a HashMap (names)
+//			ii. make result 2d array based on the row of cow names
+//		2. Calculation
+//			i. go thru 2d array row by row, compare 2 cows using nested for loop
+//			ii. update 2d array while going thru publications
+		
+		for (int r = 0; r < n; r++) {
+			for (int c = 0; c < n; c++) {
+				if (c == r) {
+					res[r][c] = 'B';
+				} else {
+					res[r][c] = '?';
+				}
+			}
+		}
+		
+		
+		for (int r = 0; r < k; r++) { // for each row
+			for (int i = 0; i < n; i++) { // 1st cow
+				String a = p[r][i]; // cow a
+				boolean alphabetical = true;
+				for (int j = i + 1; j < n; j++) { // 2nd cow
+					String b = p[r][j];
+					String beforeB = p[r][j - 1];
+					int ai = ni.get(a); // index of a in res
+					int bi = ni.get(b); // index of b in res
+					
+					/* wrong
+					 * if (beforeB.compareTo(b) > 0) {
+					 *   res[ai][bi] = '0';
+					 *   res[ai][bi] = '1';
+					 * }
+					 */
+					if (beforeB.compareTo(b) > 0) {
+						alphabetical = false;
+					}
+					if (!alphabetical) {
+						res[ai][bi] = '0';
+						res[bi][ai] = '1';
+					}
+				}
+			}
+		}
+		
+		for (int r = 0; r < n; r++) {
+			String row = "";
+			for (int c = 0; c < n; c++) {
+				row += res[r][c];
+			}
+			System.out.println(row);
+		}
+	}
+}
