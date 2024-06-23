@@ -1,0 +1,58 @@
+//package comfortcows;
+
+import java.util.*;
+import java.io.*;
+
+public class comfortcows {
+	public static void main(String[] args) throws Exception {
+//		Scanner in = new Scanner(new File("comfortcows.in"));
+		Scanner in = new Scanner(System.in);
+		int n = Integer.parseInt(in.next());
+		boolean[][] cow = new boolean[1001][1001]; // location of cows
+		int[] dx = {-1, 0, 1, 0};
+		int[] dy = {0, -1, 0, 1};
+		
+		int res = 0;
+		for (int i = 0; i < n; i++) {
+			int x = Integer.parseInt(in.next());
+			int y = Integer.parseInt(in.next());
+			
+			cow[x][y] = true;
+			
+			// self
+			int neighbors = countNeighbors(cow, x, y);			
+			if(neighbors == 3) {
+				res++;
+			}
+			
+			// neighbors
+			for (int j = 0; j < 4; j++) {
+				if (x + dx[j] >= 0 && x + dx[j] <= 1000 && y + dy[j] >= 0 && y + dy[j] <= 1000 && cow[x + dx[j]][y + dy[j]]) { // in-bounds + has cow
+					int nn = countNeighbors(cow, x + dx[j], y + dy[j]); // neighbor's neighbors
+					if (nn == 3) {
+						res++;
+					} else if (nn == 4) {
+						res--;
+					}
+				}
+			}
+			
+			System.out.println(res);
+		}
+		in.close();
+	}
+	
+	public static int countNeighbors(boolean[][] cow, int x, int y) {
+		int[] dx = {-1, 0, 1, 0};
+		int[] dy = {0, -1, 0, 1};
+		
+		int res = 0;
+		for (int i = 0; i < 4; i++) {
+			if (x + dx[i] >= 0 && x + dx[i] <= 1000 && y + dy[i] >= 0 && y + dy[i] <= 1000 && cow[x + dx[i]][y + dy[i]]) { // in-bounds + has cow
+				res++;
+			}
+		}
+	
+		return res;
+	}
+}
