@@ -1,0 +1,32 @@
+//package cowcollege;
+
+import java.util.*;
+import java.io.*;
+
+public class cowcollege {
+	public static void main(String[] args) throws Exception {
+//		Scanner in = new Scanner(new File("cowcollege.in"));
+		Scanner in = new Scanner(System.in);
+		int n = Integer.parseInt(in.next());
+		long[] tuition = new long[n];
+		for (int i = 0; i < tuition.length; i++) {
+			tuition[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		// sort tuition lowest to highest
+		Arrays.sort(tuition);
+		
+		long money = 0;
+		long fee = 0;
+		// find max amount of money FJ can make - all cows after current cow are willing to pay >= the amount of the current cow
+		for (int i = 0; i < tuition.length; i++) {
+			if ((tuition.length - i) * tuition[i] > money) {
+				money = (tuition.length - i) * tuition[i]; // tuition.length - i -> all cows after current cow
+				fee = tuition[i];
+			}
+		}
+		
+		System.out.println(money + " " + fee);
+	}
+}
