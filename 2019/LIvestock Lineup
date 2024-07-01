@@ -1,0 +1,89 @@
+//package lineup;
+
+import java.util.*;
+import java.io.*;
+
+public class lineup {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("lineup.in"));
+		int N = Integer.parseInt(in.next());
+		int[][] constraints = new int[N][2];
+		
+		
+		String[] cows = {"Beatrice","Belinda","Bella","Bessie","Betsy","Blue","Buttercup","Sue"};
+		HashMap<String, Integer> ci = new HashMap<>(); // cow + index
+		for (int i = 0; i < cows.length; i++) {
+			ci.put(cows[i], i);
+		}
+		
+		// place constraints
+		for (int i = 0; i < N; i++) {
+			String c1 = in.next();
+			in.next();
+			in.next();
+			in.next();
+			in.next();
+			String c2 = in.next();
+			
+			constraints[i][0] = ci.get(c1);
+			constraints[i][1] = ci.get(c2);
+		}
+		in.close();
+		
+		String[] perm = new String[8];
+		boolean[] used = new boolean[8];
+		int k = 0;
+		findPerm(perm, used, k, constraints, cows);
+		
+		PrintWriter out = new PrintWriter(new File("lineup.out"));
+		for (int i = 0; i < perm.length; i++) {
+			System.out.println(perm[i]);
+			out.println(perm[i]);
+		}
+		out.close();
+	}
+	
+	public static boolean findPerm(String[] perm, boolean[] used, int k, int[][] constraints, String[] cows) {
+		if (k == 8) {
+			return valid(constraints, perm, cows);
+		}
+		
+		for (int i = 0; i < 8; i++) {
+			if (!used[i]) {
+				perm[k] = cows[i];
+				used[i] = true;
+				if (findPerm(perm, used, k + 1, constraints, cows)) {
+					return true;
+				}
+				used[i] = false;
+			}
+			
+		}
+		return false;
+	}
+	
+	public static boolean valid(int[][] constraints, String[] perm, String[] cows) {
+		HashMap<String, Integer> permIndex = new HashMap<>();
+		for (int i = 0; i < perm.length; i++) {
+			permIndex.put(perm[i], i);
+		}
+		
+		for (int i = 0; i < constraints.length; i++) {
+			int c1 = constraints[i][0];
+			int c2 = constraints[i][1];
+			
+			String c1name = cows[c1];
+			String c2name = cows[c2];
+			
+			int c1pi = permIndex.get(c1name); // index of c1 in perm
+			int c2pi = permIndex.get(c2name);
+			
+			if (Math.abs(c1pi - c2pi) != 1) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	
+}
