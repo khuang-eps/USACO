@@ -1,0 +1,80 @@
+//package backforth;
+
+import java.util.*;
+import java.io.*;
+
+public class backforth {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("backforth.in"));
+		ArrayList<Integer> a = new ArrayList<>();
+		ArrayList<Integer> b = new ArrayList<>();
+		
+		for (int i = 0; i < 10; i++) {
+			a.add(Integer.parseInt(in.next())); 
+
+		}
+		for (int i = 0; i < 10; i++) {
+			b.add(Integer.parseInt(in.next())); 
+		}
+		in.close();
+		
+		int res = 0; // # of different values possible for farm A
+		
+		HashSet<Integer> vals = new HashSet<>();
+		for (int i = 0; i < a.size(); i++) { // day 1: 1 -> 2
+			int val = 1000; // amount of milk at farm A
+			int tempI = a.get(i);
+			b.add(tempI);
+			a.remove(i);
+			val -= tempI;
+			
+			for (int j = 0; j < b.size(); j++) { // day 2: 2 -> 1
+				int tempJ = b.get(j);
+				a.add(tempJ);
+				b.remove(j);
+				val += tempJ;
+				
+				for (int k = 0; k < a.size(); k++) { // day 3: 1 -> 2
+					int tempK = a.get(k);
+					b.add(tempK);
+					a.remove(k);
+					val -= tempK;
+					
+					for (int l = 0; l < b.size(); l++) { // day 4: 2 -> 1
+						int tempL = b.get(l);
+						a.add(tempL);
+						b.remove(l);
+						val += tempL;
+						
+						// check if permutation has been found
+						if (!vals.contains(val)) {
+							res++;
+							vals.add(val);
+//							System.out.println("val: " + val + " | i: " + i + " v=" + a.get(i) + " j: " + j + " v=" + b.get(j) + " k: " + k + " v=" + a.get(k) + " l: " + l + " v=" + b.get(l));
+						}
+						val -= tempL;
+						a.remove(a.size() - 1);
+						b.add(l, tempL);
+					} // end of day 4
+					val += tempK;
+					b.remove(b.size() - 1);
+					a.add(k, tempK);
+				} // end of day 3
+				val -= tempJ;
+				a.remove(a.size() - 1);
+				b.add(j, tempJ);
+			} // end of day 2
+			val += tempI;
+			b.remove(b.size() - 1);
+			a.add(i, tempI);
+			
+		} // end of day 1
+		
+		PrintWriter out = new PrintWriter(new File("backforth.out"));
+		System.out.println(res);
+		out.println(res);
+		out.close();
+	}
+	
+	
+}
