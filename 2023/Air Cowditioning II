@@ -1,0 +1,97 @@
+//package cowditioning2;
+
+import java.util.*;
+import java.io.*;
+
+public class cowditioning2 {
+	public static class Cow {
+		int s; // start
+		int t; // end
+		int c; // amount of temperature to be reduced
+	}
+	public static class Ac {
+		int a; // start
+		int b; // end
+		int p; // power of AC
+		int m; // money
+	}
+	
+	public static void main(String[] args) throws Exception {
+//		Scanner in = new Scanner(new File("cowditioning2.in"));
+		Scanner in = new Scanner(System.in);
+		int n = Integer.parseInt(in.next()); // # of cows
+		int m = Integer.parseInt(in.next()); // # of ACs
+		
+		Cow[] cows = new Cow[n];
+		Ac[] acs = new Ac[m];
+		for (int i = 0; i < n; i++) {
+			cows[i] = new Cow();
+			cows[i].s = Integer.parseInt(in.next()) - 1;
+			cows[i].t = Integer.parseInt(in.next()) - 1;
+			cows[i].c = Integer.parseInt(in.next());
+		}
+		for (int i = 0; i < m; i++) {
+			acs[i] = new Ac();
+			acs[i].a = Integer.parseInt(in.next()) - 1;
+			acs[i].b = Integer.parseInt(in.next()) - 1;
+			acs[i].p = Integer.parseInt(in.next());
+			acs[i].m = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		HashSet<String> combos = new HashSet<>();
+		recurse(combos, "", m);
+		
+		int min = Integer.MAX_VALUE; // res
+		
+		int[] c = new int[100];
+		for (int i = 0; i < cows.length; i++) {
+			for (int j = cows[i].s; j <= cows[i].t; j++) {
+				c[j] = cows[i].c;
+			}
+		}
+		// 1: valid combo (all cow conditions fulfilled)
+		// 2: optimal combo (cheapest combo)
+		for (String combo : combos) { // iterate thru all combos
+			int[] a = new int[100]; // >0 -> stall covered by AC, 0 -> stall not covered
+			int cost = 0;
+			
+			for (int i = 0; i < combo.length(); i++) { // for each AC in combo
+				if (combo.charAt(i) == '1') { // current AC is used
+					cost += acs[i].m;
+					for (int j = acs[i].a; j <= acs[i].b; j++) { 
+						a[j] += acs[i].p;
+					}
+				}
+			}
+			
+			boolean valid = true;
+			for (int i = 0; i < c.length; i++) { // for each cow
+				if (c[i] > 0 && a[i] < c[i]) { // if current stall is occupied by a cow and temperature decreased < requirement
+					valid = false;
+					break;
+				}
+			}
+			
+			if (valid) {
+				if (cost < min) {
+					min = cost;
+				}
+			}
+		}
+		
+		System.out.println(min);
+	}
+	
+	public static void recurse(HashSet<String> combos, String combo, int m) {
+		// base case
+		if (combo.length() >= m) {
+			combos.add(combo);
+			return;
+		}
+		
+		// recursive case
+		recurse(combos, combo + "0", m);
+		recurse(combos, combo + "1", m);
+	}
+}
