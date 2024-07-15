@@ -1,0 +1,56 @@
+//package guess;
+
+import java.util.*;
+import java.io.*;
+
+public class guess {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("guess.in"));
+		int n = Integer.parseInt(in.next());
+		guess guess = new guess();
+		
+		Animal[] animals = new Animal[n];
+		for (int i = 0; i < n; i++) {
+			animals[i] = guess.new Animal();
+			animals[i].name = in.next();
+			animals[i].atts = new HashSet<>();
+			int k = Integer.parseInt(in.next());
+			for (int j = 0; j < k; j++) {
+				animals[i].atts.add(in.next());
+			}
+		}
+		in.close();
+		
+		int mca = 0; // maximum common attributes
+		
+		for (int i = 0; i < n; i++) {
+//			for (int j = i - 1; j >= 0; j--) {
+//				
+//			}
+			HashSet<String> a = animals[i].atts;
+			
+			for (int j = i + 1; j < n; j++) {
+				int cca = 0; // current common attributes
+				
+				HashSet<String> b = animals[j].atts;
+				for (String k : a) {
+					if (b.contains(k)) {
+						cca++;
+					}
+				}
+				
+				mca = Math.max(cca, mca);
+			}
+		}
+		
+		PrintWriter out = new PrintWriter(new File("guess.out"));
+		System.out.println(mca + 1);
+		out.println(mca + 1);
+		out.close();
+	}
+	
+	public class Animal {
+		String name;
+		HashSet<String> atts;
+	}
+}
