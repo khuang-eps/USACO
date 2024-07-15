@@ -1,0 +1,43 @@
+//package factory;
+
+import java.util.*;
+import java.io.*;
+
+public class factory {
+	public static void main(String[] args) throws Exception {
+		Scanner In = new Scanner(new File("factory.in"));
+		int n = Integer.parseInt(In.next());
+		
+		int[] a = new int[n - 1];
+		int[] b = new int[n - 1];
+		for (int i = 0; i < n - 1; i++) {
+			a[i] = Integer.parseInt(In.next());
+			b[i] = Integer.parseInt(In.next());
+		}
+		In.close();
+		
+		int[] in = new int[n + 1];
+		int[] out = new int[n + 1];
+		
+		for (int i = 0; i < n - 1; i++) {
+			out[a[i]]++;
+			in[b[i]]++;
+		}
+		
+		int res = -1; // station i
+		int sink = 0;
+		for (int i = 1; i <= n; i++) {
+			if (out[i] == 0) { // current station doesn't lead to any stations
+				res = i;
+				sink++;
+			}
+		}
+		
+		if (sink != 1) { res = -1; }
+		
+		PrintWriter Out = new PrintWriter(new File("factory.out"));
+		Out.println(res);
+		System.out.println(res);
+		Out.close();
+	}
+}
