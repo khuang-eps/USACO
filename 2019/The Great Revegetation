@@ -1,0 +1,62 @@
+//package revegetate;
+
+import java.util.*;
+import java.io.*;
+
+public class revegetate {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("revegetate.in"));
+		int n = Integer.parseInt(in.next());
+		int m = Integer.parseInt(in.next());
+		
+		Field[] fields = new Field[n];
+		
+		revegetate r = new revegetate();
+		for (int i = 0; i < n; i++) {
+			fields[i] = r.new Field(0);
+		}
+		
+		for (int i = 0; i < m; i++) {
+			int a = Integer.parseInt(in.next()) - 1; // favorite pasture 1 (note: subtract 1 to match array index)
+			int b = Integer.parseInt(in.next()) - 1; // favorite pasture 2
+			
+			fields[a].connections.add(b);
+			fields[b].connections.add(a);
+
+		}
+		in.close();
+			
+		for (int i = 0; i < n; i++) {	
+			// disallowedGrass is a set that contains all the grass of i's connections
+			HashSet<Integer> disallowedGrass = new HashSet<>();
+			for (int c : fields[i].connections) {
+				disallowedGrass.add(fields[c].grass);
+			}
+			
+			for (int j = 1; j <= 4; j++) {
+				if (!disallowedGrass.contains(j)) {
+					fields[i].grass = j;
+					
+					break; // go to next field
+				}
+			}
+		}
+		
+		PrintWriter out = new PrintWriter(new File("revegetate.out"));
+		for (int i = 0; i < n; i++) {
+			System.out.print(fields[i].grass);
+			out.print(fields[i].grass);
+		}
+		out.close();
+	}
+	
+	public class Field {
+		int grass;
+		ArrayList<Integer> connections;	
+		
+		Field(int g) {
+			grass = g;
+			connections = new ArrayList<Integer>();
+		}
+	}
+}
