@@ -1,0 +1,37 @@
+//package sleepy;
+
+import java.util.*;
+import java.io.*;
+
+public class sleepy {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("sleepy.in"));
+		int n = Integer.parseInt(in.next());
+		int[] cows = new int[n];
+		for (int i = 0; i < n; i++) {
+			cows[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		int sorted = 1;
+		int a = cows[cows.length - 1];
+		int b = 0;
+		for (int i = n - 1; i >= 1; i--) {
+			a = cows[i];
+			b = cows[i - 1];
+			
+			if (b > a) { // failure point
+				sorted = n - i;
+				break;
+			} else {
+				sorted++;
+			}
+		}
+		
+		int res = n - sorted;
+		PrintWriter out = new PrintWriter(new File("sleepy.out"));
+		out.println(res);
+		System.out.println(res);
+		out.close();
+	}
+}
