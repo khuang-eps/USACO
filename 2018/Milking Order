@@ -1,0 +1,99 @@
+//package milkorder;
+
+import java.util.*;
+import java.io.*;
+
+public class milkorder {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("milkorder.in"));
+		int N = Integer.parseInt(in.next());
+		int M = Integer.parseInt(in.next());
+		int K = Integer.parseInt(in.next());
+		
+		int[] cows = new int[N]; // final arrangement of cows
+		for (int i = 0; i < cows.length; i++) {
+			cows[i] = -1;
+		}
+		
+		boolean has1 = false;
+		ArrayList<Integer> m = new ArrayList<>(); // order of M cows
+		for (int i = 0; i < M; i++) {
+			m.add(Integer.parseInt(in.next()));
+			if (m.get(i) == 1) {
+				has1 = true;
+			}
+		}
+		
+		HashMap<Integer, Integer> fixedCows = new HashMap<>();
+		for (int i = 0; i < K; i++) {
+			int k = Integer.parseInt(in.next());
+			int v = Integer.parseInt(in.next());
+			fixedCows.put(k, v - 1);
+			cows[v - 1] = k;
+		}
+		in.close();
+		
+		
+		int finalPos = 0;
+		if (!has1) {
+			int pos = N - 1;
+			for (int i = M - 1; i >= 0; i--) {
+				int cow = m.get(i);
+				if (fixedCows.containsKey(cow)) {
+					finalPos = fixedCows.get(cow);
+					pos = finalPos - 1;
+					
+				} else { // in ordered cows only
+					while (cows[pos] != -1) {
+						pos--;
+					}
+					cows[pos] = cow;
+					pos--;
+				}
+			}
+		} else { // has 1
+			int pos1 = 0;
+			for (int i = 0; i < M; i++) {
+				int cow = m.get(i);
+				
+				if (fixedCows.containsKey(cow)) {
+					finalPos = fixedCows.get(cow);
+					pos1 = finalPos + 1;
+				} else {
+					while (cows[pos1] != -1) {
+						pos1++;
+					}
+					cows[pos1] = cow;
+					pos1++;
+				}
+				
+				if (cow == 1) {
+					break;
+				}
+			}
+		}
+		
+		// go thru res, find the first empty position
+		int res = -1;
+		if (has1) {
+			for (int i = 0; i < cows.length; i++) {
+				if (cows[i] == 1) {
+					res = i + 1;
+					break;
+				}
+			}
+		} else {
+			for (int i = 0; i < cows.length; i++) {
+				if (cows[i] == -1) {
+					res = i + 1;
+					break;
+				}
+			}
+		}
+		
+		PrintWriter out = new PrintWriter(new File("milkorder.out"));
+		System.out.println(res);
+		out.println(res);
+		out.close();
+	}
+}
