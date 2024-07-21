@@ -1,0 +1,46 @@
+//package outofplace;
+
+import java.util.*;
+import java.io.*;
+
+public class outofplace {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("outofplace.in"));
+		int n = Integer.parseInt(in.next());
+		int[] cows = new int[n];
+		int[] sorted = new int[n];
+		for (int i = 0; i < n; i++) {
+			cows[i] = Integer.parseInt(in.next());
+			sorted[i] = cows[i];
+		}
+		in.close();
+		
+		// ALGORITHM
+		// find failure point (where Bessie is)
+		// find distance between where bessie should be and where she currently is
+		// ^ find direction of correct point (before or after bessie?)
+		// ^ first point: right before/after bessie in the direction of the correct point
+		// ^ last point: b/w 1st cow < b and 1st cow > b (bessie's final *index*)
+		// result is # of different numbers between bessie's current pos and correct pos
+		
+		// find bessie
+		int bi = 0; // bessie's index
+		int be = 0; // bessie's element
+		
+		Arrays.sort(sorted);
+		int res = 0;
+		
+		for (int i = 0; i < n; i++) {
+			if (cows[i] != sorted[i]) {
+				res++;
+			}
+		}
+		res--; // subtract itself
+
+		
+		PrintWriter out = new PrintWriter(new File("outofplace.out"));
+		System.out.println(res);
+		out.println(res);
+		out.close();
+	}
+}
