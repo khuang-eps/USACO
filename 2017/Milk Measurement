@@ -1,0 +1,66 @@
+//package measurement;
+
+import java.util.*;
+import java.io.*;
+
+public class measurement {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("measurement.in"));
+		int n = Integer.parseInt(in.next());
+		int[] days = new int[n];
+		String[] cows = new String[n];
+		int[] diff = new int[n];
+		for (int i = 0; i < n; i++) {
+			days[i] = Integer.parseInt(in.next());
+			cows[i] = in.next();
+			diff[i] = Integer.parseInt(in.next());
+		}
+		in.close();
+		
+		int b = 7; // bessie
+		int e = 7; // elsie
+		int m = 7; // mildred
+		
+		int res = 0;
+		
+		int max = -1;
+		boolean pb = true;
+		boolean pe = true;
+		boolean pm = true;
+		
+		
+//		String pcow = "";
+		for (int i = 1; i <= 100; i++) {
+			for (int j = 0; j < n; j++) {
+				if (days[j] == i) {
+					if (cows[j].equals("Bessie")) {
+						b += diff[j];
+					} else if (cows[j].equals("Elsie")) {
+						e += diff[j];
+					} else { // Mildred
+						m += diff[j];
+					}
+					
+					max = Math.max(b, Math.max(e, m));
+					boolean cb = b == max;
+					boolean ce = e == max;
+					boolean cm = m == max;
+					
+					if (cb != pb || ce != pe || cm != pm) {
+						res++;
+					}
+					pb = cb;
+					pe = ce;
+					pm = cm;
+					
+					
+				}
+			}
+		}
+		
+		PrintWriter out = new PrintWriter(new File("measurement.out"));
+		System.out.println(res);
+		out.println(res);
+		out.close();
+	}
+}
