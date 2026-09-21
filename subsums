@@ -1,0 +1,83 @@
+//package subsums;
+
+import java.util.*;
+import java.io.*;
+
+// fyi: CSES uses stdin/stdout
+
+public class subsums {
+	public static void main(String[] args) throws Exception {
+//		Scanner io = new Scanner(System.in);
+		Kattio io = new Kattio();
+		int arraySize = io.nextInt();
+		int target = io.nextInt();
+		int[] array = new int[arraySize];
+
+		for (int x = 0; x < arraySize; x++) { array[x] = io.nextInt(); }
+
+		long prefixSum = 0;
+		long ans = 0;
+		Map<Long, Integer> sums = new HashMap<>();
+		sums.put((long)0, 1);
+
+		for (int x : array) {
+			prefixSum += x;
+			/*
+			 * If there is a subarray with a prefix sum of prefix_sum - X,
+			 * we can exclude it from our current subarray to get the desired
+			 * sum. Thus, we can add the number of those subarrays to our
+			 * answer.
+			 */
+			if (sums.containsKey(prefixSum - target)) {  // check if it is in our map
+				ans += sums.get(prefixSum - target);
+			}
+
+			// Increment the amount of prefix sums with a sum of prefix_sum
+			if (!sums.containsKey(prefixSum)) {  // not yet in map, so add it
+				sums.put(prefixSum, 1);
+			} else {  // already in map, add one to it
+				sums.put(prefixSum, sums.get(prefixSum) + 1);
+			}
+		}
+		
+		System.out.println(ans);
+		
+		
+//		System.out.println(res);
+	}
+	
+	static class Kattio extends PrintWriter { // kattio default code. fyi: MUCH FASTER THAN SCANNER
+        private final BufferedReader r;
+        private StringTokenizer st;
+
+        public Kattio() {
+            this(System.in, System.out);
+        }
+
+        public Kattio(InputStream i, OutputStream o) {
+            super(o);
+            r = new BufferedReader(new InputStreamReader(i));
+        }
+
+        public String next() throws IOException {
+            while (st == null || !st.hasMoreTokens()) {
+                String line = r.readLine();
+                if (line == null) return null;
+                st = new StringTokenizer(line);
+            }
+            return st.nextToken();
+        }
+
+        public int nextInt() throws IOException {
+            return Integer.parseInt(next());
+        }
+
+        public long nextLong() throws IOException {
+            return Long.parseLong(next());
+        }
+
+        public double nextDouble() throws IOException {
+            return Double.parseDouble(next());
+        }
+    }
+}
