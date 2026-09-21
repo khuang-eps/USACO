@@ -1,0 +1,56 @@
+//package angry;
+
+import java.util.*;
+import java.io.*;
+
+public class angry {
+	public static void main(String[] args) throws Exception {
+		Scanner sc = new Scanner(new File("angry.in"));
+		PrintWriter out = new PrintWriter(new File("angry.out"));
+		
+		int n = sc.nextInt();
+		int k = sc.nextInt();
+		
+		int[] locations = new int[n];
+		for (int i = 0; i < n; i++) {
+			locations[i] = sc.nextInt();
+		}
+		
+		Arrays.sort(locations);
+		
+		int low = 0;
+		int high = 1000000000; // upper bound
+		
+		while (low < high) {
+			int mid = (low + high) / 2;
+			
+			if (canCover(locations, k, mid)) {
+				high = mid;
+			} else {
+				low = mid + 1;
+			}
+		}
+		
+		out.println(low);
+		out.close();
+		sc.close();
+	}
+	
+	static boolean canCover(int[] locations, int k, int R) {
+		int used = 0;
+		int i = 0;
+		int n = locations.length;
+		
+		while (i < n) {
+			used++;
+			
+			int coverUntil = locations[i] + 2 * R;
+			
+			while (i < n && locations[i] <= coverUntil) {
+				i++;
+			}
+		}
+		
+		return used <= k;
+	}
+}
