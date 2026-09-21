@@ -1,0 +1,42 @@
+package breedcount;
+
+import java.util.*;
+import java.io.*;
+
+public class bcount {
+    public static void main(String[] args) throws Exception {
+        Scanner in = new Scanner(new File("bcount.in"));
+
+        int n = Integer.parseInt(in.next()); // # of cows
+        int q = Integer.parseInt(in.next()); // # of queries
+
+        // arrays to store prefix sums of each breed
+        int[] count1 = new int[n + 1];
+        int[] count2 = new int[n + 1];
+        int[] count3 = new int[n + 1];
+
+        for (int i = 1; i <= n; i++) { // go thru each cow in the order
+            int breed = Integer.parseInt(in.next());
+
+            if (breed == 1) count1[i] = count1[i - 1] + 1;
+            if (breed == 2) count2[i] = count2[i - 1] + 1;
+            if (breed == 3) count3[i] = count3[i - 1] + 1;
+        }
+        in.close();
+
+        // handle queries
+        PrintWriter out = new PrintWriter(new File("bcount.out"));
+        for (int i = 0; i < q; i++) {
+            int a = Integer.parseInt(in.next());
+            int b = Integer.parseInt(in.next());
+
+            int res1 = count1[b] - count1[a - 1];
+            int res2 = count2[b] - count2[a - 1];
+            int res3 = count3[b] - count3[a - 1];
+
+            out.println(res1 + " " + res2 + " " + res3);
+            System.out.println(res1 + " " + res2 + " " + res3);
+        }
+        out.close();
+    }
+}
