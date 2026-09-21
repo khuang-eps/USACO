@@ -1,0 +1,59 @@
+package lazy;
+
+import java.util.*;
+import java.io.*;
+
+public class lazy {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("lazy.in"));
+		int n = in.nextInt();
+		int k = in.nextInt();
+		
+		Patch[] grass = new Patch[n];
+		
+		for (int i = 0; i < n; i++) {
+			grass[i] = new Patch(in);
+		}
+		in.close();
+		
+		Arrays.sort(grass);
+		
+		int result = 0; // max over all windows
+		int window = 0;
+		
+		int left = 0, right = 0; // left inclusive, right exclusive
+		
+		while (right < n) {
+			// open the right edge
+			while (right < n && grass[right].x - grass[left].x <= 2 * k) {
+				window += grass[right].g;
+				right++;
+			}
+			
+			// update results (this is the best window possible with the left edge in its current position
+			result = Math.max(result, window);
+			
+			// slide left edge
+			window -= grass[left].g;
+			left++;
+		}
+		
+		PrintWriter out = new PrintWriter(new File("lazy.out"));
+		System.out.println(result);
+		out.println(result);
+		out.close();
+	}
+	
+	static class Patch implements Comparable<Patch> {
+		int g, x;
+		
+		Patch(Scanner sc) {
+			g = sc.nextInt();
+			x = sc.nextInt();
+		}
+		
+		public int compareTo(Patch other) {
+			return this.x - other.x;
+		}
+	}
+}
