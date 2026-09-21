@@ -1,0 +1,64 @@
+//package baseball;
+
+import java.io.*;
+import java.util.*;
+
+
+public class baseball {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader("baseball.in"));
+
+        int N = Integer.parseInt(br.readLine());
+        int[] A = new int[N];
+
+        for (int i = 0; i < N; i++) {
+            A[i] = Integer.parseInt(br.readLine());
+        }
+
+        Arrays.sort(A);
+
+        int answer = 0;
+
+        // Fix X and Y
+        for (int i = 0; i < N; i++) {
+            for (int j = i + 1; j < N; j++) {
+
+                int diff = A[j] - A[i];
+
+                int minZ = A[j] + diff;
+                int maxZ = A[j] + 2 * diff;
+
+                // First index >= minZ
+                int left = lowerBound(A, minZ);
+
+                // First index > maxZ
+                int right = lowerBound(A, maxZ + 1);
+
+                answer += (right - left);
+            }
+        }
+        
+        PrintWriter out = new PrintWriter(new FileWriter("baseball.out"));
+        out.println(answer);
+        out.close();
+        br.close();
+    }
+
+    // Returns first index where A[index] >= target
+    static int lowerBound(int[] A, int target) {
+        int low = 0;
+        int high = A.length;
+
+        while (low < high) {
+            int mid = (low + high) / 2;
+
+            if (A[mid] < target) {
+                low = mid + 1;
+            } else {
+                high = mid;
+            }
+        }
+
+        return low;
+    }
+}
