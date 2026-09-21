@@ -1,0 +1,97 @@
+//package truth;
+
+import java.io.*;
+import java.util.*;
+
+//import java.io.*;
+//import java.util.*;
+
+public class truth {
+
+    static class Edge {
+        int to;
+        int type; // 0 = same, 1 = different
+
+        Edge(int t, int ty) {
+            to = t;
+            type = ty;
+        }
+    }
+
+    static ArrayList<Edge>[] graph;
+    static int[] color; // -1 = uncolored, 0 or 1 = assigned
+
+    static boolean dfs(int node) {
+        for (Edge e : graph[node]) {
+            int next = e.to;
+            int required = color[node] ^ e.type;
+
+            if (color[next] == -1) {
+                color[next] = required;
+                if (!dfs(next)) return false;
+            } else {
+                if (color[next] != required) {
+                    return false; // contradiction
+                }
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(new File("truth.in"));
+        int N = sc.nextInt();
+        int M = sc.nextInt();
+
+        graph = new ArrayList[N + 1];
+        for (int i = 1; i <= N; i++) {
+            graph[i] = new ArrayList<>();
+        }
+
+        color = new int[N + 1];
+        Arrays.fill(color, -1);
+
+        int answer = 0;
+
+        for (int i = 1; i <= M; i++) {
+            int x = sc.nextInt();
+            int y = sc.nextInt();
+            char c = sc.next().charAt(0);
+
+            int type = (c == 'T') ? 0 : 1;
+
+            // add edge both directions
+            graph[x].add(new Edge(y, type));
+            graph[y].add(new Edge(x, type));
+
+            boolean valid = true;
+
+            // If both uncolored, arbitrarily start coloring
+            if (color[x] == -1 && color[y] == -1) {
+                color[x] = 0;
+                if (!dfs(x)) valid = false;
+            } 
+            // If one colored, propagate from that one
+            else if (color[x] != -1 && color[y] == -1) {
+                if (!dfs(x)) valid = false;
+            } 
+            else if (color[y] != -1 && color[x] == -1) {
+                if (!dfs(y)) valid = false;
+            } 
+            else {
+                // both colored — just check consistency
+                if ((color[x] ^ color[y]) != type) {
+                    valid = false;
+                }
+            }
+
+            if (!valid) break;
+
+            answer++;
+        }
+
+        PrintWriter out = new PrintWriter(new File("truth.out"));
+        out.println(answer);
+        out.close();
+    }
+}
