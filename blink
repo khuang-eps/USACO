@@ -1,0 +1,35 @@
+package blink;
+
+import java.util.*;
+import java.io.*;
+
+public class blink {
+	public static void main(String[] args) throws Exception {
+		/*
+		 * algorithm:
+		 * 
+		 * at each time step, for each bulb i:
+		 * look at left neighbor (bulb[i-1] -- bulb[0]'s left neighbor is bulb[n-1])
+		 * total 2^n states ---> max 2^16 states
+		 * we know that the problem cycles back to the start every n steps
+		 * ==> jump ahead cycle
+		 * 
+		 * use a map:
+		 * key = state (using string)
+		 * value = time t when this state FIRST SEEN
+		 * 
+		 * using a time counter t:
+		 * 1. convert current bulbs to a string state
+		 * 2. if never seen, store t as first time seen
+		 * do one step
+		 * t++
+		 */
+		Scanner in = new Scanner(new File("blink.in"));
+		
+		
+		in.close();
+		
+		PrintWriter out = new PrintWriter(new File("blink.out"));
+		out.close();
+	}
+}
