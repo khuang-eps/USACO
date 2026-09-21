@@ -1,0 +1,55 @@
+package revegetate;
+
+import java.util.*;
+import java.io.*;
+
+public class revegetate {
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(new File("revegetate.in"));
+        sc.close();
+    
+        int result = 0;
+        
+        PrintWriter pw = new PrintWriter(new File("revegetate.out"));
+        System.out.println(result);
+        pw.println(result);
+        pw.close();
+    }
+
+    static class Node {  // Pasture
+        int id;
+        int grassType;    // -1, 1  for actual grass types, and 0 for "unplanted"
+        
+        Set<Node> same = new HashSet<>();
+        Set<Node> diff = new HashSet<>();
+        
+        // how does a Node (or other custom class) function in data structures
+        //   HashSet/other hashing:
+        //     all Nodes are assumed to be diff from each other, and
+        //        can always be re-found, using the default .hashCode()
+        //        def inherited from Object class
+        //           - this is completely independent from any data stored in
+        //              vars in Node (or other object)
+        //           - it is possible (Gold division) to change .hashCode
+        
+        //    TreeSet/other Comparable-based structure/sorting:
+        //       crashes (can't convert to Comparable)
+        //       can define it as Comparable to make them inherently sortable
+        //       can provide our own Comparator at time of sorting/
+        //            at time of data structure creation
+        
+        //alternatives
+        // within node class,
+        // map from neighboring nodes to "data about the
+        //       connection to that node"
+        //    - ex. in this problem, map from node to "t/f" for diet type
+        //    - ex. map from node (e.g. city) to number about connection
+        //           to a neighboring node (e.g. dist to another city)
+        
+        // outside the node class, you could map(or use an array) from
+        //    all nodes to the list of their neighboring nodes
+        //    (and maybe don't need node class, if the data about
+        //     each "node" could be stored in another array/map)
+    }
+
+}
