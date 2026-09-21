@@ -1,0 +1,52 @@
+//package hps;
+
+import java.util.*;
+import java.io.*;
+
+public class hps {
+	public static void main(String[] args) throws Exception {
+		Scanner in = new Scanner(new File("hps.in")); // maybe switch to buffered reader in the future?
+		int n = Integer.parseInt(in.next());
+		int[] h = new int[n]; // prefix sum of hoof move wins
+		int[] p = new int[n]; // paper wins
+		int[] s = new int[n]; // scissor wins
+		
+		int hc = 0; // current # of wins for hoof
+		int pc = 0;
+		int sc = 0;
+		for (int i = 0; i < n; i++) {
+			String move = in.next(); // next string -> second cow's move
+			
+			if (move.equals("H")) { // paper > hoof
+				pc++;
+			} else if (move.equals("P")) { // scissor > paper
+				sc++;
+			} else { // hoof > scissor
+				hc++;
+			}
+			p[i] = pc;
+			s[i] = sc;
+			h[i] = hc;
+		}
+		in.close();
+		
+		int bestMax = 0;
+		for (int i = 0; i < n; i++) { // i -> divide point: everything before i is move 1, everything after is move 2
+			int leftH = h[i];
+			int leftP = p[i];
+			int leftS = s[i];
+			int leftMax = Math.max(leftH, Math.max(leftP, leftS)); // best move out of the 3 on the left at that divide point
+			
+			int rightH = h[n - 1] - leftH;
+			int rightP = p[n - 1] - leftP;
+			int rightS = s[n - 1] - leftS;
+			int rightMax = Math.max(rightH, Math.max(rightP, rightS)); // repeat for right
+			
+			bestMax = Math.max(bestMax, leftMax + rightMax); // update bestmax if current divide point's max is better
+		}
+		
+		PrintWriter out = new PrintWriter("hps.out");
+		out.println(bestMax);
+		out.close();
+	}
+}
