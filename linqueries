@@ -1,0 +1,79 @@
+package linqueries;
+
+import java.util.*;
+import java.io.*;
+
+public class linqueries {
+	public static void main(String[] args) throws Exception {
+		Kattio io = new Kattio();
+		int Q = io.nextInt();
+		
+		
+		for (int q = 0; q < Q; q++) { // for each query
+			int A = io.nextInt(); // query type
+			int B = io.nextInt(); // given: cow c or position x
+			int C = io.nextInt(); // time: find b @ immediately after c
+			
+			if (A == 1) { // query type 1: given cow, find pos
+				int c = B; // cow #
+				int t = C; // time given
+				
+				int pos = c;
+				for (int i = c; i < t; i++) {
+					int mid = i / 2;
+					
+					if (pos == 0) pos = mid; // moved to t/2
+					else if (pos <= mid) pos++;
+				}
+			}
+			
+			if (B == 1) { // query type 1: given cow, find pos
+				int x = B; // cow #
+				int t = C; // time given
+				
+				int c = x;
+				for (int i = t; i < t; i++) {
+					int mid = i / 2;
+					
+					if (pos == 0) pos = mid; // moved to t/2
+					else if (pos <= mid) pos++;
+				}
+			}
+		}
+		// pos after t/2 will never get affected
+		// only the front half will get affected
+		// basically trace the cows back in time
+		// first time a cow moves is always at t = 2c
+		// +1, back (+1 steps) -> 2 steps total
+		// +2, back 2 steps
+		// +3, back 3 steps
+		// ...
+	}
+	
+	static class Kattio extends PrintWriter {
+		private final BufferedReader r;
+		private StringTokenizer st;
+		
+		public Kattio() {
+			this(System.in, System.out);
+		}
+		
+		public Kattio(InputStream i, OutputStream o) {
+			super(o);
+			r = new BufferedReader(new InputStreamReader(i));
+		}
+		
+		public String next() throws IOException {
+			while (st == null || !st.hasMoreTokens()) {
+				String line = r.readLine();
+				if (line == null) return null;
+				st = new StringTokenizer(line);
+			}
+			return st.nextToken();
+		}
+		
+		public int nextInt() throws IOException {
+			return Integer.parseInt(next());
+		}
+	}
+}
