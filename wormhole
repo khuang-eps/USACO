@@ -1,0 +1,115 @@
+
+
+
+
+import java.util.*;
+import java.io.*;
+
+public class wormhole {
+    // public is not necessary, since even non-public elements
+    //   are visible within the class (and within the package, if not private)
+    static int[][] wormholes;   // default value: null
+    // static makes it so
+    //    - the element can be referenced without naming a specific object
+    //    - the element IS associated with the class itself
+    //          - outside the class, you must name the class, then the method
+    //                 Arrays.sort          Math.abs
+    //          - inside the class, it's assumed any method call without a named
+    //              class is assumed to be either a static or instance method
+    //              from that class
+    //          - inside a static method, you can't access instance vars/methods
+    //              without specifying an instance, but you can access static vars
+    //              and methods
+    
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(new File("wormhole.in"));
+        int n = sc.nextInt();
+        
+        wormholes = new int[n][2];
+        // row #: wormhole id #
+        // col #: 0 => x, 1 => y   (of that wormhole)
+        
+        // be careful not to redefine the same var after making it global
+        //   - local code (inside this method) will refer to local var,
+        //        but after method completes, other references will be
+        //        to the "global" var (less local), 
+        
+        for (int i = 0; i < n; i++) {
+            wormholes[i][0] = sc.nextInt();
+            wormholes[i][1] = sc.nextInt();
+        }
+        sc.close();
+        
+        // Arrays.sort(wormholes, (a,b) -> a[1] - b[1]);
+        // the -> notation is part of a lambda expression
+        // in this case, the lambda result is assumed to be returned
+        //    on the only line inside the method in the class being defined
+        
+        Arrays.sort(wormholes,  (a,b) -> {
+            int dy = a[1] - b[1];
+            if (dy == 0) return a[0] - b[0];
+            //                a.x=7    b.x=9    => -2   for example
+            return dy;
+        });
+        // this expression defines and instantiates a class implementing an
+        //    interface with the specified method definition
+    
+        int[] links = new int[n];
+        Arrays.fill(links, -1);
+        int result = countCyclicalArrangments(0, links);
+        
+        // ex. link-tracking array
+        //         {-1, -1, -1, -1, -1, ...}
+        //           0   1   2   ...
+        //           ^
+        //         first func call input
+        
+        //         {3, 2, 1, 0, 7, ......., 4, ....}
+        
+        //          0  1  2  3  4  5        7
+        //                         ^
+        //                     next func call input
+        
+        PrintWriter pw = new PrintWriter(new File("wormhole.out"));
+        System.out.println(result);
+        pw.println(result);
+        pw.close();
+    }
+    
+    // this counts wormhole arrangements where cycles are possible, based
+    //    on the links already made, and continuing to make new links
+    //    starting with the index specified
+    static int countCyclicalArrangements(int next, int[] links) {
+        if (next >= links.length) {
+            if (hasCycles(links)) return 1;
+            return 0;
+        }
+        
+        // if "next" WH is NOT unlinked, then move to a later one
+        if (links[next] != -1) return countCyclicalArrangements(next+1, link);
+        
+        
+    }
+    
+    
+    
+    // Arrays.sort(myArray,   new WormholeSorter());
+    
+    static class WormholeSorter implements Comparator<int[]> {
+        public int compare(int[] a, int[] b) {
+            // SAME AS ABOVE LAMBDA EXPRESSION
+            int dy = a[1] - b[1];
+            if (dy == 0) return a[0] - b[0];
+            return dy;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
